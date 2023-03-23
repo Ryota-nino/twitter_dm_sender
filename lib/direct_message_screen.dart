@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:twitter_dm_sender/regist_message_screen.dart';
+import 'package:twitter_dm_sender/send_message_screen.dart';
 
 class DirectMessageScreen extends StatelessWidget {
   const DirectMessageScreen({
@@ -65,7 +66,17 @@ class DirectMessageScreen extends StatelessWidget {
             child: ListTile(
               title: Text(list[index]["title"]),
               tileColor: Colors.black12,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SendMessageScreen(
+                      title: list[index]["title"],
+                      content: list[index]["content"],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
