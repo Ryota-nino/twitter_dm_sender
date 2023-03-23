@@ -30,11 +30,11 @@ class _MyAppState extends State<MyApp> {
     return [
       const BottomNavigationBarItem(
         icon: Icon(Icons.home),
-        label: 'HOME',
+        label: 'Home',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.mail),
-        label: 'DM',
+        label: 'Message',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.person),
