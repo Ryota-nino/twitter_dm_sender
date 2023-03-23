@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:twitter_dm_sender/regist_message_screen.dart';
 
 class DirectMessageScreen extends StatelessWidget {
   const DirectMessageScreen({
@@ -39,6 +40,23 @@ class DirectMessageScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const RegistMessageScreen(title: '新規メッセージ追加')),
+          );
+        },
+        label: const Text(
+          'メッセージ追加',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        icon: const Icon(Icons.add),
+      ),
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
@@ -47,7 +65,6 @@ class DirectMessageScreen extends StatelessWidget {
             child: ListTile(
               title: Text(list[index]["title"]),
               tileColor: Colors.black12,
-              contentPadding: EdgeInsets.all(3),
               onTap: () {},
             ),
           );
