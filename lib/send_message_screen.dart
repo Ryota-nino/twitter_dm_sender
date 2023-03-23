@@ -22,6 +22,24 @@ class SendMessageScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) =>
+          //           const RegistMessageScreen(title: '新規メッセージ追加')),
+          // );
+        },
+        backgroundColor: Colors.orange,
+        label: const Text(
+          'メッセージ送信',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        icon: const Icon(Icons.send),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
