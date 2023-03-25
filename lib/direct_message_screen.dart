@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:twitter_dm_sender/regist_message_screen.dart';
 import 'package:twitter_dm_sender/send_message_screen.dart';
 
-class DirectMessageScreen extends StatelessWidget {
+class DirectMessageScreen extends StatefulWidget {
   const DirectMessageScreen({
     required this.title,
     super.key,
@@ -11,6 +11,11 @@ class DirectMessageScreen extends StatelessWidget {
 
   final String title;
 
+  @override
+  State<DirectMessageScreen> createState() => _DirectMessageScreenState();
+}
+
+class _DirectMessageScreenState extends State<DirectMessageScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> list = [
@@ -33,13 +38,13 @@ class DirectMessageScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {},
-          ),
-        ],
+        title: Text(widget.title),
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.edit),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -61,24 +66,24 @@ class DirectMessageScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Card(
-              child: ListTile(
-                title: Text(list[index]["title"]),
-                tileColor: Colors.black12,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SendMessageScreen(
-                        title: list[index]["title"],
-                        content: list[index]["content"],
-                      ),
-                    ),
-                  );
-                },
+          return Card(
+            child: ListTile(
+              title: Text(list[index]["title"]),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {},
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SendMessageScreen(
+                      title: list[index]["title"],
+                      content: list[index]["content"],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
