@@ -50,13 +50,21 @@ class SendMessageScreen extends StatelessWidget {
             children: [
               const Text("アカウント名：リヴォルエッグ"),
               const Text("ID：@rivolegg"),
-              Text(title),
+              const SizedBox(height: 30),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 30),
               Text(content),
               const SizedBox(height: 30),
               Text("このメッセージが未送信のフォロワー：3528名"),
-              const SizedBox(height: 30),
               Container(
                 alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
                   maxLength: 3,
                   keyboardType: TextInputType.number,
