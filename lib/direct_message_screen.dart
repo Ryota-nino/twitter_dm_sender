@@ -62,21 +62,23 @@ class DirectMessageScreen extends StatelessWidget {
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              title: Text(list[index]["title"]),
-              tileColor: Colors.black12,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SendMessageScreen(
-                      title: list[index]["title"],
-                      content: list[index]["content"],
+            padding: const EdgeInsets.all(4.0),
+            child: Card(
+              child: ListTile(
+                title: Text(list[index]["title"]),
+                tileColor: Colors.black12,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SendMessageScreen(
+                        title: list[index]["title"],
+                        content: list[index]["content"],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
         },
