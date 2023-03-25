@@ -16,12 +16,12 @@ class SendMessageScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("メッセージ送信"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.edit),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
