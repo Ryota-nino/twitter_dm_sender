@@ -16,6 +16,8 @@ class DirectMessageScreen extends StatefulWidget {
 }
 
 class _DirectMessageScreenState extends State<DirectMessageScreen> {
+  bool isEdit = false;
+
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> list = [
@@ -39,12 +41,41 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.edit),
-        //     onPressed: () {},
-        //   ),
-        // ],
+        actions: [
+          if (isEdit == true) ...{
+            TextButton(
+              child: const Text(
+                "完了",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  isEdit = false;
+                  print(isEdit);
+                  print("編集完了");
+                });
+              },
+            ),
+          } else ...{
+            TextButton(
+              child: const Text(
+                "編集",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  this.isEdit = true;
+                  print(isEdit);
+                  print("編集モード");
+                });
+              },
+            ),
+          }
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -68,10 +99,24 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
         itemBuilder: (BuildContext context, int index) {
           return Card(
             child: ListTile(
-              title: Text(list[index]["title"]),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {},
+              title: Text(
+                list[index]["title"],
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: Visibility(
+                visible: isEdit,
+                child: Wrap(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               ),
               onTap: () {
                 Navigator.push(
