@@ -101,12 +101,14 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
         future: dbHelper.queryAllRows(),
         builder: (context, future) {
           if (!future.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text("メッセージがありません。"),
-                Text("新しく追加してください"),
-              ],
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("メッセージがありません。"),
+                  Text("新しく追加してください"),
+                ],
+              ),
             );
           } else {
             List<Map<String, dynamic>>? list = future.data;
