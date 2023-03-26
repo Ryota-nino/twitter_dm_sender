@@ -94,4 +94,12 @@ class DatabaseHelper {
     Database? db = await instance.database;
     return await db!.delete(tableName, where: '_id = ?', whereArgs: [id]);
   }
+
+  resetDatabase() async {
+    var documentsDirectory = await getApplicationDocumentsDirectory();
+    var path = join(documentsDirectory.path, _databaseName);
+    await deleteDatabase(path); // データベースの削除
+
+    await _initDatabase();
+  }
 }
