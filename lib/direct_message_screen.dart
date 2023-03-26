@@ -87,49 +87,63 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("メッセージがありません。"),
-                  Text("新しく追加してください。"),
+                children: [
+                  const Text("メッセージがありません。"),
+                  const Text("新しく追加してください。"),
                 ],
               ),
             );
           } else {
+            // クエリデータは読み取り専用なのでデータを変換して格納する。
             list = List<Map<String, dynamic>>.from(future.data as Iterable);
             return ListView.builder(
               itemCount: list!.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(
-                      list![index]["title"],
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: Visibility(
-                      visible: isEdit,
-                      child: Wrap(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                    onTap: () async {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => SendMessageScreen(
-                            title: list![index]["title"],
-                            content: list![index]["content"],
+                return Column(
+                  children: [
+                    Card(
+                      child: ListTile(
+                        title: Text(
+                          list![index]["title"],
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Visibility(
+                          visible: isEdit,
+                          child: Wrap(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () async {
+                                  // final id = await dbHelper.queryRowCount();
+                                  final int id = list![index]["_id"];
+                                  final rowsDeleted = await dbHelper.delete(id);
+                                  setState(() {
+                                    // list!.removeAt(index);
+                                  });
+                                  print(list);
+                                  print('削除しました。 $rowsDeleted ID: $id');
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {},
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                  ),
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SendMessageScreen(
+                                title: list![index]["title"],
+                                content: list![index]["content"],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               },
             );
