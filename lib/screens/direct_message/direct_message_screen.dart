@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_dm_sender/screens/direct_message/edit_message_screen.dart';
 import 'package:twitter_dm_sender/screens/direct_message/regist_message_screen.dart';
 import 'package:twitter_dm_sender/screens/direct_message/send_message_screen.dart';
 import 'package:twitter_dm_sender/models/database_helper.dart';
@@ -27,6 +28,19 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          TextButton(
+            child: const Text(
+              "DB初期化",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+                dbHelper.resetDatabase();
+              });
+            },
+          ),
           if (isEdit == true) ...{
             TextButton(
               child: const Text(
@@ -114,19 +128,28 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () async {
-                                  // final id = await dbHelper.queryRowCount();
                                   final int id = list![index]["_id"];
                                   final rowsDeleted = await dbHelper.delete(id);
-                                  setState(() {
-                                    // list!.removeAt(index);
-                                  });
-                                  print(list);
+                                  setState(() {});
                                   print('削除しました。 $rowsDeleted ID: $id');
+                                  print(list);
                                 },
                               ),
                               IconButton(
                                 icon: const Icon(Icons.edit),
-                                onPressed: () {},
+                                onPressed: () async {
+                                  Map<String, dynamic> updatedMsg =
+                                      await Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (builder) => EditMessageScreen(
+                                          title: "メッセージ編集",
+                                          msgData: list![index]),
+                                    ),
+                                  );
+                                  setState(() {
+                                    list![index] = updatedMsg;
+                                  });
+                                },
                               ),
                             ],
                           ),
