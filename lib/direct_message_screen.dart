@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:twitter_dm_sender/regist_message_screen.dart';
 import 'package:twitter_dm_sender/send_message_screen.dart';
 import 'package:twitter_dm_sender/models/database_helper.dart';
@@ -20,27 +19,10 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
   bool isEdit = false;
   // DatabaseHelper クラスのインスタンス取得
   final dbHelper = DatabaseHelper.instance;
+  late List<Map<String, dynamic>>? list = [];
 
   @override
   Widget build(BuildContext context) {
-    // final List<Map<String, dynamic>> list = [
-    //   {
-    //     "id": 1,
-    //     "title": "フォロー時のメッセージ",
-    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
-    //   },
-    //   {
-    //     "id": 2,
-    //     "title": "3/22ライブ告知",
-    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
-    //   },
-    //   {
-    //     "id": 3,
-    //     "title": "4/20ライブ告知",
-    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
-    //   },
-    // ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -56,7 +38,6 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
               onPressed: () {
                 setState(() {
                   isEdit = false;
-                  print(isEdit);
                   print("編集完了");
                 });
               },
@@ -71,8 +52,7 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
               ),
               onPressed: () {
                 setState(() {
-                  this.isEdit = true;
-                  print(isEdit);
+                  isEdit = true;
                   print("編集モード");
                 });
               },
@@ -81,13 +61,16 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
+        onPressed: () async {
+          final Map<String, dynamic> newMessage =
+              await Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) =>
-                    const RegistMessageScreen(title: '新規メッセージ追加')),
+                    const RegistMessageScreen(screenTitle: '新規メッセージ追加')),
           );
+          setState(() {
+            list!.add(newMessage);
+          });
         },
         label: const Text(
           'メッセージ追加',
@@ -106,19 +89,19 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Text("メッセージがありません。"),
-                  Text("新しく追加してください"),
+                  Text("新しく追加してください。"),
                 ],
               ),
             );
           } else {
-            List<Map<String, dynamic>>? list = future.data;
+            list = List<Map<String, dynamic>>.from(future.data as Iterable);
             return ListView.builder(
               itemCount: list!.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: ListTile(
                     title: Text(
-                      list[index]["title"],
+                      list![index]["title"],
                       overflow: TextOverflow.ellipsis,
                     ),
                     trailing: Visibility(
@@ -136,13 +119,12 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
+                    onTap: () async {
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SendMessageScreen(
-                            title: list[index]["title"],
-                            content: list[index]["content"],
+                            title: list![index]["title"],
+                            content: list![index]["content"],
                           ),
                         ),
                       );
@@ -156,11 +138,4 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
       ),
     );
   }
-
-  // // 照会ボタンクリック
-  // void _query() async {
-  //   final allRows = await dbHelper.queryAllRows();
-  //   print('全てのデータを照会しました。');
-  //   allRows.forEach(print);
-  // }
 }

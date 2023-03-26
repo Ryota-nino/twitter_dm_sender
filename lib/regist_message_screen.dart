@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:twitter_dm_sender/models/database_helper.dart';
 
-class RegistMessageScreen extends StatelessWidget {
+class RegistMessageScreen extends StatefulWidget {
   const RegistMessageScreen({
-    required this.title,
+    required this.screenTitle,
     super.key,
   });
 
-  final String title;
+  final String screenTitle;
+
+  @override
+  State<RegistMessageScreen> createState() => _RegistMessageScreenState();
+}
+
+class _RegistMessageScreenState extends State<RegistMessageScreen> {
+  String title = "";
+  String content = "";
+
+  // DatabaseHelper クラスのインスタンス取得
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.screenTitle),
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -42,6 +54,10 @@ class RegistMessageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  onChanged: (text) {
+                    // TODO: ここで取得したtextを使う
+                    title = text;
+                  },
                 ),
                 const SizedBox(height: 30),
                 TextFormField(
@@ -64,11 +80,20 @@ class RegistMessageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  onChanged: (text) {
+                    content = text;
+                  },
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    Map<String, dynamic> row = {
+                      DatabaseHelper.title: title,
+                      DatabaseHelper.content: content,
+                      DatabaseHelper.unsend: 4000
+                    };
+                    final id = await dbHelper.insert(row);
+                    Navigator.of(context).pop(row);
                   },
                   child: const Text("追加"),
                 )
@@ -79,4 +104,19 @@ class RegistMessageScreen extends StatelessWidget {
       ),
     );
   }
+
+  // // 登録ボタンクリック
+  // void _insert(
+  //   String title,
+  //   content,
+  // ) async {
+  //   // row to insert
+  //   Map<String, dynamic> row = {
+  //     DatabaseHelper.title: title,
+  //     DatabaseHelper.content: content,
+  //     DatabaseHelper.unsend: 4000
+  //   };
+  //   final id = await dbHelper.insert(row);
+  //   print('登録しました。id: $id');
+  // }
 }
