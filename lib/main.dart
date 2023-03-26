@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:twitter_dm_sender/account_screen.dart';
-import 'package:twitter_dm_sender/direct_message_screen.dart';
+import 'package:twitter_dm_sender/screens/account_screen.dart';
+import 'package:twitter_dm_sender/screens/direct_message_screen.dart';
 import 'package:twitter_dm_sender/home_screen.dart';
 
 void main() {
