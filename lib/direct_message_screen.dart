@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:twitter_dm_sender/regist_message_screen.dart';
 import 'package:twitter_dm_sender/send_message_screen.dart';
+import 'package:twitter_dm_sender/models/database_helper.dart';
 
 class DirectMessageScreen extends StatefulWidget {
   const DirectMessageScreen({
@@ -17,26 +18,28 @@ class DirectMessageScreen extends StatefulWidget {
 
 class _DirectMessageScreenState extends State<DirectMessageScreen> {
   bool isEdit = false;
+  // DatabaseHelper クラスのインスタンス取得
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> list = [
-      {
-        "id": 1,
-        "title": "フォロー時のメッセージ",
-        "content": "フォローありがとうございます！\nリヴォルエッグです！",
-      },
-      {
-        "id": 2,
-        "title": "3/22ライブ告知",
-        "content": "フォローありがとうございます！\nリヴォルエッグです！",
-      },
-      {
-        "id": 3,
-        "title": "4/20ライブ告知",
-        "content": "フォローありがとうございます！\nリヴォルエッグです！",
-      },
-    ];
+    // final List<Map<String, dynamic>> list = [
+    //   {
+    //     "id": 1,
+    //     "title": "フォロー時のメッセージ",
+    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
+    //   },
+    //   {
+    //     "id": 2,
+    //     "title": "3/22ライブ告知",
+    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
+    //   },
+    //   {
+    //     "id": 3,
+    //     "title": "4/20ライブ告知",
+    //     "content": "フォローありがとうございます！\nリヴォルエッグです！",
+    //   },
+    // ];
 
     return Scaffold(
       appBar: AppBar(
@@ -94,45 +97,68 @@ class _DirectMessageScreenState extends State<DirectMessageScreen> {
         ),
         icon: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: ListTile(
-              title: Text(
-                list[index]["title"],
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: Visibility(
-                visible: isEdit,
-                child: Wrap(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {},
+      body: FutureBuilder(
+        future: dbHelper.queryAllRows(),
+        builder: (context, future) {
+          if (!future.hasData) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text("メッセージがありません。"),
+                Text("新しく追加してください"),
+              ],
+            );
+          } else {
+            List<Map<String, dynamic>>? list = future.data;
+            return ListView.builder(
+              itemCount: list!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(
+                      list[index]["title"],
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {},
+                    trailing: Visibility(
+                      visible: isEdit,
+                      child: Wrap(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SendMessageScreen(
-                      title: list[index]["title"],
-                      content: list[index]["content"],
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SendMessageScreen(
+                            title: list[index]["title"],
+                            content: list[index]["content"],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               },
-            ),
-          );
+            );
+          }
         },
       ),
     );
   }
+
+  // // 照会ボタンクリック
+  // void _query() async {
+  //   final allRows = await dbHelper.queryAllRows();
+  //   print('全てのデータを照会しました。');
+  //   allRows.forEach(print);
+  // }
 }
