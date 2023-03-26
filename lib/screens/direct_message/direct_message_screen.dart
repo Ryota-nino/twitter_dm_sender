@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_dm_sender/screens/regist_message_screen.dart';
-import 'package:twitter_dm_sender/send_message_screen.dart';
+import 'package:twitter_dm_sender/screens/direct_message/regist_message_screen.dart';
+import 'package:twitter_dm_sender/screens/direct_message/send_message_screen.dart';
 import 'package:twitter_dm_sender/models/database_helper.dart';
 
 class DirectMessageScreen extends StatefulWidget {

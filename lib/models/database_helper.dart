@@ -8,7 +8,7 @@ class DatabaseHelper {
   static final _databaseName = "rivolegg.db"; // DB名
   static final _databaseVersion = 1; // スキーマのバージョン指定
 
-  static final tableName = 'massages'; // テーブル名
+  static final tableName = 'messages'; // テーブル名
 
   static final id = '_id'; // カラム名：ID
   static final title = 'title'; // カラム名:Title

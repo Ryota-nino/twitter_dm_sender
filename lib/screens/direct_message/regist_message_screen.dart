@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:twitter_dm_sender/models/database_helper.dart';
 
 class RegistMessageScreen extends StatefulWidget {
