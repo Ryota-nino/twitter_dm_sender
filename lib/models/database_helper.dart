@@ -80,7 +80,7 @@ class DatabaseHelper {
     Database? db = await instance.database;
     int updateId = row[id];
     return await db!
-        .update(tableName, row, where: '$id = ?', whereArgs: [updateId]);
+        .update(tableName, row, where: '_id = ?', whereArgs: [updateId]);
   }
 
   // レコード数を確認
@@ -92,6 +92,6 @@ class DatabaseHelper {
 
   Future<int> delete(int id) async {
     Database? db = await instance.database;
-    return await db!.delete(tableName, where: '$id = ?', whereArgs: [id]);
+    return await db!.delete(tableName, where: '_id = ?', whereArgs: [id]);
   }
 }
