@@ -9,6 +9,17 @@ class AccountScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("アカウント"),
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("サインイン"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
